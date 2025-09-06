@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { ArrowLeft, Upload, X, Camera, Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -6,7 +6,13 @@ import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { useState, useEffect } from 'react';
+import { supabase } from "../supabase-client";
+import { title } from "process";
 
+// Get current user
+const { data: { user } } = await supabase.auth.getUser()
+console.log('Signed-in user:', user)
 interface AddProductScreenProps {
   onBack: () => void;
   onSubmit: (product: any) => void;
@@ -25,10 +31,15 @@ export function AddProductScreen({ onBack, onSubmit }: AddProductScreenProps) {
   const categories = ["Clothing", "Furniture", "Electronics", "Books", "Home & Garden", "Sports", "Toys", "Other"];
   const conditions = ["Like New", "Good", "Fair", "Needs Repair"];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(formData);
-  };
+    const { error } = await supabase
+  .from('listing')
+  .insert({title: formData.title, category: formData.category, description: formData.description, condition: formData.condition,  price: parseFloat(formData.price),image_url:"hello", created_by: user?.id});
+  if (error) {
+    console.error('Error inserting listing:', error);}
+  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     // In a real app, this would handle actual file upload
