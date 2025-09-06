@@ -6,6 +6,8 @@ import { Label } from './ui/label';
 import { AnimatedLogo } from './AnimatedLogo';
 import { ThemeToggle } from './ThemeToggle';
 import { Eye, EyeOff, Lock, Mail, User, ArrowRight, CheckCircle, AlertCircle, Sparkles, Heart, Leaf, Recycle } from 'lucide-react';
+import { createClient } from '@supabase/supabase-js'
+const supabase = createClient("https://alflufcvliigemognwph.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFsZmx1ZmN2bGlpZ2Vtb2dud3BoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxMzY2MTgsImV4cCI6MjA3MjcxMjYxOH0.QdJ7_CPiazpt4no2NaLHFVJVJuG6IA3cq9DfVrbYyc0")
 
 interface LoginScreenProps {
   onLogin: () => void;
@@ -29,6 +31,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, isSignup, set
   const [isSuccess, setIsSuccess] = useState(false);
   const [animateForm, setAnimateForm] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
 
   // Mouse tracking for interactive effects
   useEffect(() => {
@@ -108,11 +111,37 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, isSignup, set
     if (!emailValidation.valid || !passwordValidation.valid || (isSignup && !nameValidation.valid)) {
       return;
     }
-
     setIsLoading(true);
+    if (isSignup) {
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: email.value,
+        password: password.value,
+        options: {
+          data: {
+            first_name: name.value,
+          }
+        }
+      });
+      if (signUpError) {
+        console.error("Error signing up:", signUpError.message);
+        alert("Error signing up: " + signUpError.message);
+        return;
+      }
+    } else {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: email.value,
+        password: password.value,
+      });
+      if (signInError) {
+        console.error("Error signing in:", signInError.message);
+        alert("Error signing in: " + signInError.message);
+        return;
+      }
+    }
+    
 
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // await new Promise(resolve => setTimeout(resolve, 2000));
 
     setIsLoading(false);
     setIsSuccess(true);
