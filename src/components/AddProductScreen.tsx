@@ -7,7 +7,7 @@ import { Textarea } from "./ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { useState, useEffect } from 'react';
-import { supabase } from "../supabase-client";
+import { supabase } from "./supabase-client";
 import { title } from "process";
 
 // Get current user

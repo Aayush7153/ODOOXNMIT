@@ -7,7 +7,7 @@ import { AnimatedLogo } from './AnimatedLogo';
 import { ThemeToggle } from './ThemeToggle';
 import { Eye, EyeOff, Lock, Mail, User, ArrowRight, CheckCircle, AlertCircle, Sparkles, Heart, Leaf, Recycle } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js'
-import { supabase } from '../supabase-client';
+import { supabase } from './supabase-client';
 interface LoginScreenProps {
   onLogin: () => void;
   isSignup: boolean;
