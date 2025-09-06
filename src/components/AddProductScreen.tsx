@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, Upload, X, Sparkles, Camera, Wand2 } from "lucide-react";
+import { ArrowLeft, Upload, X, Camera, Send } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -40,14 +40,7 @@ export function AddProductScreen({ onBack, onSubmit }: AddProductScreenProps) {
     }));
   };
 
-  const handleAiAssist = () => {
-    // Mock AI assistance
-    setFormData(prev => ({
-      ...prev,
-      title: "Vintage Denim Jacket - Classic Blue",
-      description: "Authentic vintage denim jacket in excellent condition. Features classic button closure, chest pockets, and timeless design. Perfect for layering and adding a retro touch to any outfit. Shows minimal wear with beautiful fading that adds character."
-    }));
-  };
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -126,21 +119,9 @@ export function AddProductScreen({ onBack, onSubmit }: AddProductScreenProps) {
                 <p className="text-sm text-muted-foreground">Add up to 5 high-quality photos of your item</p>
               </div>
 
-              {/* Product Title with AI Assist */}
+              {/* Product Title */}
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="title" className="text-lg font-semibold">Product Title *</Label>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleAiAssist}
-                    className="glass-card border-border/50 hover:border-accent dark:hover:border-primary transition-all duration-300 glow-effect"
-                  >
-                    <Wand2 className="w-4 h-4 mr-2" />
-                    AI Assist
-                  </Button>
-                </div>
+                <Label htmlFor="title" className="text-lg font-semibold">Product Title *</Label>
                 <Input
                   id="title"
                   type="text"
@@ -193,21 +174,9 @@ export function AddProductScreen({ onBack, onSubmit }: AddProductScreenProps) {
                 </div>
               </div>
 
-              {/* Description with AI Assist */}
+              {/* Description */}
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="description" className="text-lg font-semibold">Description *</Label>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleAiAssist}
-                    className="glass-card border-border/50 hover:border-accent dark:hover:border-primary transition-all duration-300 glow-effect"
-                  >
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    AI Enhance
-                  </Button>
-                </div>
+                <Label htmlFor="description" className="text-lg font-semibold">Description *</Label>
                 <Textarea
                   id="description"
                   placeholder="Describe your item's features, history, condition, and any unique details..."
@@ -244,7 +213,7 @@ export function AddProductScreen({ onBack, onSubmit }: AddProductScreenProps) {
                   className="w-full h-14 rounded-xl gradient-button text-white text-lg font-semibold shadow-2xl"
                   size="lg"
                 >
-                  <Sparkles className="w-5 h-5 mr-2" />
+                  <Send className="w-5 h-5 mr-2" />
                   Submit Listing
                 </Button>
                 <p className="text-center text-muted-foreground mt-4">

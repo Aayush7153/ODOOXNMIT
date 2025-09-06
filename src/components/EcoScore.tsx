@@ -1,49 +1,59 @@
-import { Leaf, Info } from "lucide-react";
-import { Badge } from "./ui/badge";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import React from 'react';
+import { Badge } from './ui/badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { Leaf } from 'lucide-react';
 
 interface EcoScoreProps {
   score: number;
-  className?: string;
   showTooltip?: boolean;
-  variant?: 'default' | 'overlay';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
 }
 
-export function EcoScore({ score, className = "", showTooltip = true, variant = 'default' }: EcoScoreProps) {
+export const EcoScore: React.FC<EcoScoreProps> = ({ 
+  score, 
+  showTooltip = true, 
+  size = 'md',
+  className = '' 
+}) => {
   const getScoreColor = (score: number) => {
-    if (score >= 80) return "text-green-600 dark:text-green-400";
-    if (score >= 60) return "text-yellow-600 dark:text-yellow-400";
-    return "text-orange-600 dark:text-orange-400";
+    if (score >= 90) return 'excellent-eco-score';
+    if (score >= 75) return 'good-eco-score';
+    if (score >= 60) return 'fair-eco-score';
+    return 'poor-eco-score';
   };
 
-  const getScoreBackground = (score: number, variant: string) => {
-    if (variant === 'overlay') {
-      if (score >= 80) return "eco-score-overlay border-green-400 text-green-100";
-      if (score >= 60) return "eco-score-overlay border-yellow-400 text-yellow-100";
-      return "eco-score-overlay border-orange-400 text-orange-100";
-    }
-    if (score >= 80) return "bg-green-100 dark:bg-green-900/30 border-green-300 dark:border-green-700";
-    if (score >= 60) return "bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700";
-    return "bg-orange-100 dark:bg-orange-900/30 border-orange-300 dark:border-orange-700";
+  const getScoreText = (score: number) => {
+    if (score >= 90) return 'Excellent';
+    if (score >= 75) return 'Good';
+    if (score >= 60) return 'Fair';
+    return 'Poor';
   };
 
-  const getImpactMessage = (score: number) => {
-    if (score >= 80) return "Excellent sustainability impact! This item significantly reduces environmental footprint.";
-    if (score >= 60) return "Good environmental choice. This item has positive sustainability benefits.";
-    return "Moderate impact. Better than buying new, but consider higher-rated alternatives.";
+  const sizeClasses = {
+    sm: 'text-xs px-2 py-1',
+    md: 'text-sm px-3 py-1',
+    lg: 'text-base px-4 py-2'
+  };
+
+  const iconSizes = {
+    sm: 'w-3 h-3',
+    md: 'w-4 h-4',
+    lg: 'w-5 h-5'
   };
 
   const badge = (
     <Badge 
-      variant="outline" 
-      className={`${getScoreBackground(score, variant)} ${variant === 'overlay' ? '' : getScoreColor(score)} font-semibold text-xs px-3 py-1.5 rounded-full shadow-lg transition-all duration-300 hover:scale-105 ${className}`}
+      className={`enhanced-eco-score flex items-center gap-1 ${sizeClasses[size]} ${getScoreColor(score)} ${className}`}
     >
-      <Leaf className="w-3.5 h-3.5 mr-1.5" />
-      {score}
+      <Leaf className={`${iconSizes[size]} eco-leaf-icon`} />
+      <span className="eco-score-number">{score}</span>
     </Badge>
   );
 
-  if (!showTooltip) return badge;
+  if (!showTooltip) {
+    return badge;
+  }
 
   return (
     <TooltipProvider>
@@ -51,28 +61,16 @@ export function EcoScore({ score, className = "", showTooltip = true, variant = 
         <TooltipTrigger asChild>
           {badge}
         </TooltipTrigger>
-        <TooltipContent 
-          side="top" 
-          className="max-w-xs glass-card border-border/50 p-3"
-        >
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Info className="w-4 h-4 text-muted-foreground" />
-              <span className="font-medium">EcoScore Breakdown</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {getImpactMessage(score)}
+        <TooltipContent className="eco-score-tooltip">
+          <div className="text-center">
+            <p className="tooltip-title">EcoScore: {score}/100</p>
+            <p className="tooltip-description">{getScoreText(score)}</p>
+            <p className="tooltip-info mt-1">
+              Based on sustainability factors
             </p>
-            <div className="text-xs text-muted-foreground">
-              • Condition: {score >= 80 ? "Excellent" : score >= 60 ? "Good" : "Fair"}
-              <br />
-              • CO₂ Saved: ~{(score * 0.05).toFixed(1)}kg
-              <br />
-              • Water Saved: ~{(score * 2).toFixed(0)}L
-            </div>
           </div>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
-}
+};

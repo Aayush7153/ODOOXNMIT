@@ -6,6 +6,8 @@ import { Card, CardContent, CardFooter } from "./ui/card";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { ThemeToggle } from "./ThemeToggle";
 import { EcoScore } from "./EcoScore";
+import { InteractiveHeart } from "./InteractiveHeart";
+import { PlaceholderCard } from "./PlaceholderCard";
 
 interface Product {
   id: string;
@@ -82,146 +84,181 @@ export function ProductFeed({
   });
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="glass-card border-b border-border/50 sticky top-0 z-10 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-          <div className="flex items-center justify-between mb-4 sm:mb-6">
-            <div className="flex items-center space-x-3 sm:space-x-4">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-accent to-primary dark:from-primary dark:to-accent rounded-2xl flex items-center justify-center shadow-lg glow-effect">
-                <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+    <div className="screen-wrapper min-h-screen bg-background">
+      {/* Enhanced TopNavGroup Header */}
+      <header className="top-nav-group sticky top-0 z-10">
+        <div className="max-w-full mx-auto px-4">
+          <div className="top-nav-content flex-col gap-4">
+            {/* Top Row - Logo, Search, Actions */}
+            <div className="flex items-center justify-between w-full gap-4">
+              {/* Logo Section */}
+              <div className="top-nav-logo flex-shrink-0">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-accent to-primary dark:from-primary dark:to-accent rounded-2xl flex items-center justify-center shadow-lg glow-effect">
+                  <Leaf className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                </div>
+                <div className="hidden sm:block">
+                  <h1 className="text-xl sm:text-2xl font-bold font-heading bg-gradient-to-r from-accent to-primary dark:from-primary dark:to-accent bg-clip-text text-transparent">
+                    EcoFinds
+                  </h1>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Sustainable Marketplace</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-xl sm:text-2xl font-bold font-heading bg-gradient-to-r from-accent to-primary dark:from-primary dark:to-accent bg-clip-text text-transparent">
-                  EcoFinds
-                </h1>
-                <p className="text-xs sm:text-sm text-muted-foreground">Sustainable Marketplace</p>
+
+              {/* Enhanced Search Bar */}
+              <div className="flex-1 max-w-lg relative">
+                <Search className="enhanced-search-icon absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5" />
+                <Input
+                  type="text"
+                  placeholder="Search sustainable finds..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="enhanced-search-input pl-10 sm:pl-12 h-12 rounded-2xl text-base transition-all duration-200 ease-in-out w-full"
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="top-nav-actions flex-shrink-0">
+                <ThemeToggle />
+                <Button variant="ghost" size="icon" className="relative hover:scale-110 transition-transform hidden sm:flex">
+                  <Heart className="w-5 h-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="relative hover:scale-110 transition-transform">
+                  <ShoppingCart className="w-5 h-5" />
+                  <Badge className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center p-0 gradient-button text-white text-xs">
+                    2
+                  </Badge>
+                </Button>
               </div>
             </div>
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <ThemeToggle />
-              <Button variant="ghost" size="icon" className="relative hover:scale-110 transition-transform hidden sm:flex">
-                <Heart className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="relative hover:scale-110 transition-transform">
-                <ShoppingCart className="w-5 h-5" />
-                <Badge className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center p-0 gradient-button text-white text-xs">
-                  2
-                </Badge>
-              </Button>
+            
+            {/* Bottom Row - Horizontal Scrolling Category Filters */}
+            <div className="w-full overflow-hidden">
+              <div className="horizontal-category-scroll">
+                <div className="category-scroll-wrapper">
+                  {categories.map((category, index) => (
+                    <div key={category} className="category-item">
+                      <Button
+                        variant={selectedCategory === category ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedCategory(category)}
+                        className={`category-button ${
+                          selectedCategory === category 
+                            ? "category-active" 
+                            : "category-inactive"
+                        }`}
+                      >
+                        {category}
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Scroll Indicators */}
+                <div className="scroll-indicators">
+                  <div className="scroll-indicator-left"></div>
+                  <div className="scroll-indicator-right"></div>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          {/* Search Bar */}
-          <div className="relative mb-4 sm:mb-6">
-            <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-5 sm:h-5" />
-            <Input
-              type="text"
-              placeholder="Search for sustainable finds..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 sm:pl-12 h-12 sm:h-14 rounded-2xl glass-card border-border/50 focus:border-accent dark:focus:border-primary text-base sm:text-lg transition-all duration-300 focus:glow-effect"
-            />
-          </div>
-          
-          {/* Category Filters */}
-          <div className="flex flex-wrap gap-3">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                size="lg"
-                onClick={() => setSelectedCategory(category)}
-                className={`rounded-full px-6 py-2 transition-all duration-300 ${
-                  selectedCategory === category 
-                    ? "gradient-button text-white shadow-lg" 
-                    : "glass-card border-border/50 hover:border-accent dark:hover:border-primary hover:glow-effect"
-                }`}
-              >
-                {category}
-              </Button>
-            ))}
           </div>
         </div>
       </header>
 
-      {/* Product Grid */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredProducts.map((product) => (
-            <Card 
-              key={product.id} 
-              className="group cursor-pointer glass-card border-border/50 hover-lift overflow-hidden"
-              onClick={() => onProductSelect(product)}
-            >
-              <CardContent className="p-0">
-                <div className="relative overflow-hidden">
-                  <ImageWithFallback
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Heart Button */}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className={`absolute top-4 right-4 glass-card hover:scale-110 transition-all duration-300 ${
-                      product.liked ? "text-red-500" : "text-white"
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Handle like toggle
-                    }}
-                  >
-                    <Heart className={`w-5 h-5 ${product.liked ? "fill-current" : ""}`} />
-                  </Button>
-                  
-                  {/* EcoScore Badge */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <EcoScore score={product.ecoScore} variant="overlay" />
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <Badge variant="secondary" className="mb-3 bg-muted/50 text-muted-foreground border border-border/50">
-                    {product.category}
-                  </Badge>
-                  <h3 className="font-semibold font-heading text-lg text-foreground mb-2 line-clamp-2 group-hover:text-accent dark:group-hover:text-primary transition-colors">
-                    {product.title}
-                  </h3>
-                  <p className="text-2xl font-bold bg-gradient-to-r from-accent to-primary dark:from-primary dark:to-accent bg-clip-text text-transparent">
-                    ${product.price}
-                  </p>
-                </div>
-              </CardContent>
-              
-              <CardFooter className="p-6 pt-0">
-                <Button
-                  size="lg"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onCartAdd(product);
-                  }}
-                  className="w-full gradient-button text-white shadow-lg"
+      {/* Optimized Product Grid */}
+      <main className="scrollable-main flex-1 overflow-auto">
+        <div className="product-container px-4">
+          
+          {/* Main Product Grid Section */}
+          <div className="main-product-section">
+            <div className="section-header">
+              <h2 className="section-title">
+                {selectedCategory === "All" ? "All Products" : selectedCategory}
+              </h2>
+              <p className="section-subtitle">{filteredProducts.length} items found</p>
+            </div>
+            
+            <div className="optimized-product-grid">
+              {filteredProducts.map((product) => (
+                <Card 
+                  key={product.id} 
+                  className="optimized-product-card group cursor-pointer"
+                  onClick={() => onProductSelect(product)}
                 >
-                  Add to Cart
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+                  <CardContent className="p-0 relative">
+                    {/* Product Image */}
+                    <div className="relative overflow-hidden product-image-container">
+                      <ImageWithFallback
+                        src={product.image}
+                        alt={product.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      {/* Enhanced EcoScore Badge */}
+                      <div className="absolute top-3 left-3 z-10">
+                        <EcoScore score={product.ecoScore} showTooltip={false} />
+                      </div>
+                      
+                      {/* Enhanced Interactive Heart */}
+                      <div className="absolute top-3 right-3 z-10">
+                        <InteractiveHeart
+                          initialState={product.liked}
+                          onToggle={(isFavorited) => {
+                            console.log('Product favorited:', isFavorited, product.id);
+                          }}
+                          size="sm"
+                          className="enhanced-heart-button"
+                        />
+                      </div>
+                    </div>
+                    
+                    {/* Product Content */}
+                    <div className="optimized-product-content">
+                      <div className="product-text-container">
+                        <h3 className="optimized-product-title">
+                          {product.title}
+                        </h3>
+                        <p className="optimized-product-price">
+                          ${product.price}
+                        </p>
+                      </div>
+                      
+                      {/* Add to Cart Button */}
+                      <Button
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onCartAdd(product);
+                        }}
+                        className="optimized-add-to-cart-button w-full"
+                      >
+                        Add to Cart
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+          
+          {/* No Results State */}
+          {filteredProducts.length === 0 && (
+            <div className="no-results-container">
+              <div className="no-results-content">
+                <Search className="w-16 h-16 text-muted-foreground mb-4" />
+                <h3 className="no-results-title">No products found</h3>
+                <p className="no-results-subtitle">Try adjusting your search or filter criteria</p>
+              </div>
+            </div>
+          )}
         </div>
         
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-16">
-            <div className="w-32 h-32 glass-card rounded-full flex items-center justify-center mx-auto mb-6 glow-effect">
-              <Search className="w-16 h-16 text-muted-foreground" />
-            </div>
-            <h3 className="text-2xl font-semibold font-heading text-foreground mb-3">No products found</h3>
-            <p className="text-muted-foreground text-lg">Try adjusting your search or filter criteria</p>
+        {/* Vertical Scroll Indicator */}
+        <div className="vertical-scroll-indicator">
+          <div className="scroll-track">
+            <div className="scroll-thumb"></div>
           </div>
-        )}
+        </div>
       </main>
     </div>
   );

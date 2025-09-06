@@ -1,43 +1,42 @@
 import React, { useState, useEffect } from 'react';
 
 export const AnimatedLogo: React.FC = () => {
-  const [animationState, setAnimationState] = useState('seed');
+  const [stage, setStage] = useState<'seed' | 'growing' | 'leaf' | 'bounce' | 'glow' | 'complete'>('seed');
 
   useEffect(() => {
-    const animationSequence = () => {
-      setAnimationState('seed');
-      
-      setTimeout(() => setAnimationState('growing'), 500);
-      setTimeout(() => setAnimationState('leaf'), 1500);
-      setTimeout(() => setAnimationState('bounce'), 2000);
-      setTimeout(() => setAnimationState('glow'), 2500);
-      setTimeout(() => setAnimationState('complete'), 3500);
-    };
+    const sequence = [
+      { stage: 'seed', duration: 1000 },
+      { stage: 'growing', duration: 1000 },
+      { stage: 'leaf', duration: 800 },
+      { stage: 'bounce', duration: 600 },
+      { stage: 'glow', duration: 1000 },
+      { stage: 'complete', duration: 0 }
+    ];
 
-    // Start animation immediately
-    animationSequence();
-    
-    // Repeat every 6 seconds
-    const interval = setInterval(animationSequence, 6000);
-    
-    return () => clearInterval(interval);
+    let totalDelay = 0;
+    sequence.forEach(({ stage, duration }) => {
+      setTimeout(() => {
+        setStage(stage as any);
+      }, totalDelay);
+      totalDelay += duration;
+    });
   }, []);
 
   return (
     <div className="animated-logo-container">
-      <div className={`logo-icon ${animationState}`}>
-        {/* Seed Stage */}
+      <div className={`logo-icon ${stage}`}>
+        {/* Seed stage */}
         <div className="seed-stage">
           <div className="seed"></div>
         </div>
-        
-        {/* Growing Stage */}
+
+        {/* Growing stage */}
         <div className="growing-stage">
           <div className="stem"></div>
           <div className="small-leaf"></div>
         </div>
-        
-        {/* Full Leaf Stage */}
+
+        {/* Full leaf stage */}
         <div className="leaf-stage">
           <div className="full-stem"></div>
           <div className="full-leaf">
@@ -46,11 +45,11 @@ export const AnimatedLogo: React.FC = () => {
             <div className="leaf-vein leaf-vein-3"></div>
           </div>
         </div>
-        
-        {/* Glowing Aura */}
+
+        {/* Glow aura */}
         <div className="glow-aura"></div>
       </div>
-      
+
       <div className="logo-text">
         <span className="eco">Eco</span>
         <span className="finds">Finds</span>

@@ -216,44 +216,47 @@ export default function App() {
   const showNavigation = isLoggedIn && currentScreen !== "login";
 
   return (
-    <div className="min-h-screen bg-background relative">
-      {/* Eco Login Animated Background */}
+    <div className="min-h-screen bg-background relative overflow-x-hidden">
+      {/* Simple Animated Background */}
       <EcoLoginBackground />
       
-      {renderScreen()}
+      {/* Main Screen Container with Proper Scrolling */}
+      <div className="screen-container min-h-screen pb-24">
+        {renderScreen()}
+      </div>
       
       {/* Bottom Navigation */}
       {showNavigation && (
         <nav className="fixed bottom-0 left-0 right-0 glass-card border-t border-border/50 z-50 shadow-2xl">
-          <div className="max-w-md mx-auto px-6 py-4">
-            <div className="flex items-center justify-around">
+          <div className="horizontal-scroll-container max-w-full mx-auto px-4 py-4">
+            <div className="navigation-scroll-wrapper flex items-center justify-center gap-2 min-w-max px-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setCurrentScreen("feed")}
-                className={`flex flex-col items-center space-y-2 h-auto py-3 px-4 rounded-2xl transition-all duration-300 ${
+                className={`nav-button flex flex-col items-center space-y-1 h-auto py-2 px-3 rounded-xl transition-all duration-300 flex-shrink-0 ${
                   currentScreen === "feed" 
-                    ? "gradient-button text-white shadow-lg" 
-                    : "text-muted-foreground hover:text-foreground hover:scale-110"
+                    ? "gradient-button text-white shadow-lg scale-105" 
+                    : "text-muted-foreground hover:text-foreground hover:scale-105"
                 }`}
               >
-                <Home className="w-5 h-5" />
-                <span className="text-xs font-medium">Home</span>
+                <Home className="w-4 h-4" />
+                <span className="text-xs font-medium whitespace-nowrap">Home</span>
               </Button>
               
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setCurrentScreen("cart")}
-                className={`flex flex-col items-center space-y-2 h-auto py-3 px-4 rounded-2xl transition-all duration-300 relative ${
+                className={`nav-button flex flex-col items-center space-y-1 h-auto py-2 px-3 rounded-xl transition-all duration-300 relative flex-shrink-0 ${
                   currentScreen === "cart" 
-                    ? "gradient-button text-white shadow-lg" 
-                    : "text-muted-foreground hover:text-foreground hover:scale-110"
+                    ? "gradient-button text-white shadow-lg scale-105" 
+                    : "text-muted-foreground hover:text-foreground hover:scale-105"
                 }`}
               >
-                <ShoppingCart className="w-5 h-5" />
-                <span className="text-xs font-medium">Cart</span>
-                <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
+                <ShoppingCart className="w-4 h-4" />
+                <span className="text-xs font-medium whitespace-nowrap">Cart</span>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center shadow-lg">
                   <span className="text-xs text-white font-bold">2</span>
                 </div>
               </Button>
@@ -262,42 +265,42 @@ export default function App() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setCurrentScreen("add-product")}
-                className={`flex flex-col items-center space-y-2 h-auto py-3 px-4 rounded-2xl transition-all duration-300 ${
+                className={`nav-button flex flex-col items-center space-y-1 h-auto py-2 px-3 rounded-xl transition-all duration-300 flex-shrink-0 ${
                   currentScreen === "add-product" 
-                    ? "gradient-button text-white shadow-lg" 
-                    : "text-muted-foreground hover:text-foreground hover:scale-110"
+                    ? "gradient-button text-white shadow-lg scale-105" 
+                    : "text-muted-foreground hover:text-foreground hover:scale-105"
                 }`}
               >
-                <PlusCircle className="w-5 h-5" />
-                <span className="text-xs font-medium">Sell</span>
+                <PlusCircle className="w-4 h-4" />
+                <span className="text-xs font-medium whitespace-nowrap">Sell</span>
               </Button>
               
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setCurrentScreen("my-listings")}
-                className={`flex flex-col items-center space-y-2 h-auto py-3 px-4 rounded-2xl transition-all duration-300 ${
+                className={`nav-button flex flex-col items-center space-y-1 h-auto py-2 px-3 rounded-xl transition-all duration-300 flex-shrink-0 ${
                   currentScreen === "my-listings" 
-                    ? "gradient-button text-white shadow-lg" 
-                    : "text-muted-foreground hover:text-foreground hover:scale-110"
+                    ? "gradient-button text-white shadow-lg scale-105" 
+                    : "text-muted-foreground hover:text-foreground hover:scale-105"
                 }`}
               >
-                <Heart className="w-5 h-5" />
-                <span className="text-xs font-medium">Saved</span>
+                <Heart className="w-4 h-4" />
+                <span className="text-xs font-medium whitespace-nowrap">Saved</span>
               </Button>
               
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setCurrentScreen("dashboard")}
-                className={`flex flex-col items-center space-y-2 h-auto py-3 px-4 rounded-2xl transition-all duration-300 ${
+                className={`nav-button flex flex-col items-center space-y-1 h-auto py-2 px-3 rounded-xl transition-all duration-300 flex-shrink-0 ${
                   currentScreen === "dashboard" 
-                    ? "gradient-button text-white shadow-lg" 
-                    : "text-muted-foreground hover:text-foreground hover:scale-110"
+                    ? "gradient-button text-white shadow-lg scale-105" 
+                    : "text-muted-foreground hover:text-foreground hover:scale-105"
                 }`}
               >
-                <User className="w-5 h-5" />
-                <span className="text-xs font-medium">Profile</span>
+                <User className="w-4 h-4" />
+                <span className="text-xs font-medium whitespace-nowrap">Profile</span>
               </Button>
             </div>
           </div>
